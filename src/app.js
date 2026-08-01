@@ -26,18 +26,19 @@ initializeApp();
 const app = express();
 
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
-app.use(
-  cors({
-    origin: [
-      "https://profile-cipicung-admin.vercel.app",
-      "https://cijeruk-cipicung.vercel.app",
-      "http://localhost:5173",
-      "http://192.168.111.136:5173",
-      "https://portal.cijeruk-cipicung.com"
-    ],
-    credentials: true,
-  }),
-);
+// app.use(
+//   cors({
+//     origin: [
+//       "https://profile-cipicung-admin.vercel.app",
+//       "https://cijeruk-cipicung.vercel.app",
+//       "http://localhost:5173",
+//       "http://192.168.111.136:5173",
+//       "https://portal.cijeruk-cipicung.com",
+//       "http://192.168.101.53:3000"
+//     ],
+//     credentials: true,
+//   }),
+// );
 
 app.use(compression());
 app.use(express.json());
