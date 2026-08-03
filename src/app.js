@@ -24,7 +24,6 @@ import { imageRouter } from "./routes/image.routes.js";
 initializeApp();
 
 const app = express();
-
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 app.use(
   cors({
