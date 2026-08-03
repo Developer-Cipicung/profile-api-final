@@ -39,7 +39,12 @@ export const createNewsValidator = [
     .notEmpty()
     .withMessage('Content is required')
     .isString()
-    .trim()
+    .trim(),
+  body('created_at')
+    .optional()
+    .isISO8601()
+    .toDate()
+    .withMessage('created_at must be a valid ISO 8601 date string')
 ];
 
 export const updateNewsValidator = [
@@ -60,9 +65,14 @@ export const updateNewsValidator = [
     .trim()
     .notEmpty()
     .withMessage('Content cannot be empty if provided'),
+  body('created_at')
+    .optional()
+    .isISO8601()
+    .toDate()
+    .withMessage('created_at must be a valid ISO 8601 date string'),
   body().custom((value, { req }) => {
-    if (!req.body.title && !req.body.content && !req.file) {
-      throw new Error('At least one field (title, content, or image) must be provided for update');
+    if (!req.body.title && !req.body.content && !req.body.created_at && !req.file && !req.body.remove_thumbnail) {
+      throw new Error('At least one field (title, content, created_at, or image) must be provided for update');
     }
     return true;
   })

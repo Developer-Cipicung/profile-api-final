@@ -61,6 +61,7 @@ export const createNews = async (data, file) => {
     const news = await newsRepo.createNews({
       title: data.title,
       content: data.content,
+      created_at: data.created_at ? (data.created_at instanceof Date ? data.created_at.toISOString() : data.created_at) : undefined,
       thumbnail_url: thumbnailKey
     });
     return processThumbnail(news);
@@ -93,6 +94,7 @@ export const updateNews = async (id, data, file) => {
     const updatedNews = await newsRepo.updateNews(id, {
       title: data.title,
       content: data.content,
+      created_at: data.created_at ? (data.created_at instanceof Date ? data.created_at.toISOString() : data.created_at) : undefined,
       thumbnail_url: newThumbnailKey
     });
 

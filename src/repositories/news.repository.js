@@ -39,10 +39,14 @@ export const getNewsById = async (id, client = null) => {
 };
 
 export const createNews = async (newsData, client = null) => {
-  const { title, content, thumbnail_url } = newsData;
+  const { title, content, thumbnail_url, created_at } = newsData;
+  const insertPayload = { title, content, thumbnail_url };
+  if (created_at) {
+    insertPayload.created_at = created_at;
+  }
   const { data, error } = await supabase
     .from('news')
-    .insert([{ title, content, thumbnail_url }])
+    .insert([insertPayload])
     .select('id, title, content, thumbnail_url, created_at, updated_at')
     .single();
     

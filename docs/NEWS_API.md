@@ -108,14 +108,16 @@ Creates a new news article.
 
 ### Request Body (Form Data)
 
-| Field       | Type | Required | Rules                                           |
-| ----------- | ---- | -------- | ----------------------------------------------- |
-| `title`     | text | Yes      | Max 255 characters. Cannot be empty.            |
-| `content`   | text | Yes      | Cannot be empty.                                |
-| `thumbnail` | file | No       | Max 5MB. Allowed: `jpg`, `jpeg`, `png`, `webp`. |
+| Field        | Type   | Required | Rules                                                                           |
+| ------------ | ------ | -------- | ------------------------------------------------------------------------------- |
+| `title`      | text   | Yes      | Max 255 characters. Cannot be empty.                                            |
+| `content`    | text   | Yes      | Cannot be empty.                                                                |
+| `created_at` | text   | No       | Tanggal kegiatan berita (ISO 8601 string, misal: `2026-08-03`). Default: waktu sekarang. |
+| `thumbnail`  | file   | No       | Max 5MB. Allowed: `jpg`, `jpeg`, `png`, `webp`.                                 |
 
 ### Business Rules
 
+- If `created_at` is omitted, the current timestamp is automatically used.
 - If `thumbnail` is omitted, `thumbnail_url` is stored as `null` in the database.
 - Uploaded files are saved in `/uploads/news/`.
 
@@ -145,13 +147,15 @@ Updates an existing news article.
 
 All fields are optional, but **at least one field** must be provided.
 | Field | Type | Rules |
-|-------|------|-------|
+|---|---|---|
 | `title` | text | Max 255 characters. |
 | `content` | text | Cannot be empty if provided. |
+| `created_at` | text | Tanggal kegiatan berita (ISO 8601 string, misal: `2026-08-03`). |
 | `thumbnail` | file | Max 5MB. Replaces old image. |
 
 ### Business Rules
 
+- If `created_at` is provided, updates the event date recorded for the news.
 - Automatically updates `updated_at` to the current timestamp.
 - **Image Replacement**: If a new `thumbnail` is uploaded and the news already has a custom image, the old image is safely deleted from the filesystem.
 
