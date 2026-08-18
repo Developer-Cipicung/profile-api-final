@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS products (
     description VARCHAR(255) NOT NULL CHECK (char_length(trim(description)) > 0 AND char_length(description) <= 255),
     price INTEGER NOT NULL CHECK (price > 0),
     no_telp VARCHAR(20) NULL,
+    shopee_url TEXT NULL,
     image_url TEXT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP

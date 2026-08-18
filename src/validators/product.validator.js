@@ -1,5 +1,16 @@
 import { query, body, param } from 'express-validator';
 
+const isShopeeUrl = (value) => {
+  try {
+    const url = new URL(value);
+    const isHttp = url.protocol === 'http:' || url.protocol === 'https:';
+    const isShopee = url.hostname === 'shopee.co.id' || url.hostname.endsWith('.shopee.co.id');
+    return isHttp && isShopee;
+  } catch {
+    return false;
+  }
+};
+
 export const getProductsValidator = [
   query('page')
     .optional()
@@ -52,7 +63,15 @@ export const createProductValidator = [
     .isString()
     .trim()
     .isLength({ max: 20 })
-    .withMessage('Phone number cannot exceed 20 characters')
+    .withMessage('Phone number cannot exceed 20 characters'),
+  body('shopee_url')
+    .optional({ checkFalsy: true })
+    .isString()
+    .trim()
+    .isLength({ max: 500 })
+    .withMessage('Shopee URL cannot exceed 500 characters')
+    .custom(isShopeeUrl)
+    .withMessage('Shopee URL must use shopee.co.id')
 ];
 
 export const updateProductValidator = [
@@ -85,9 +104,17 @@ export const updateProductValidator = [
     .trim()
     .isLength({ max: 20 })
     .withMessage('Phone number cannot exceed 20 characters'),
+  body('shopee_url')
+    .optional({ checkFalsy: true })
+    .isString()
+    .trim()
+    .isLength({ max: 500 })
+    .withMessage('Shopee URL cannot exceed 500 characters')
+    .custom(isShopeeUrl)
+    .withMessage('Shopee URL must use shopee.co.id'),
   body().custom((value, { req }) => {
-    if (!req.body.name && !req.body.description && !req.body.price && !req.body.no_telp && !req.file) {
-      throw new Error('At least one field (name, description, price, no_telp, or image) must be provided for update');
+    if (!req.body.name && !req.body.description && !req.body.price && !req.body.no_telp && req.body.shopee_url === undefined && !req.file) {
+      throw new Error('At least one field (name, description, price, no_telp, shopee_url, or image) must be provided for update');
     }
     return true;
   })

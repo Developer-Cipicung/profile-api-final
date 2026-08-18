@@ -13,7 +13,7 @@ export const countProducts = async (search, client = null) => {
 };
 
 export const getProducts = async (limit, offset, search, sortBy, client = null) => {
-  let query = supabase.from('products').select('id, name, description, price, no_telp, image_url, created_at, updated_at');
+  let query = supabase.from('products').select('id, name, description, price, no_telp, shopee_url, image_url, created_at, updated_at');
   
   if (search) {
     query = query.ilike('name', `%${search}%`);
@@ -37,7 +37,7 @@ export const getProducts = async (limit, offset, search, sortBy, client = null) 
 export const getProductById = async (id, client = null) => {
   const { data, error } = await supabase
     .from('products')
-    .select('id, name, description, price, no_telp, image_url, created_at, updated_at')
+    .select('id, name, description, price, no_telp, shopee_url, image_url, created_at, updated_at')
     .eq('id', id)
     .maybeSingle();
     
@@ -46,11 +46,11 @@ export const getProductById = async (id, client = null) => {
 };
 
 export const createProduct = async (productData, client = null) => {
-  const { name, description, price, no_telp, image_url } = productData;
+  const { name, description, price, no_telp, shopee_url, image_url } = productData;
   const { data, error } = await supabase
     .from('products')
-    .insert([{ name, description, price, no_telp, image_url }])
-    .select('id, name, description, price, no_telp, image_url, created_at, updated_at')
+    .insert([{ name, description, price, no_telp, shopee_url, image_url }])
+    .select('id, name, description, price, no_telp, shopee_url, image_url, created_at, updated_at')
     .single();
     
   if (error) throw error;
@@ -66,7 +66,7 @@ export const updateProduct = async (id, productData, client = null) => {
     .from('products')
     .update(payload)
     .eq('id', id)
-    .select('id, name, description, price, no_telp, image_url, created_at, updated_at')
+    .select('id, name, description, price, no_telp, shopee_url, image_url, created_at, updated_at')
     .maybeSingle();
     
   if (error) throw error;

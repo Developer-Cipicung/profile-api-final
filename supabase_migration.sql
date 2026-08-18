@@ -15,3 +15,6 @@ ALTER TABLE admins ALTER COLUMN role SET DEFAULT 'PROFILE_ADMIN';
 -- Drop it first if it exists to make it idempotent
 ALTER TABLE admins DROP CONSTRAINT IF EXISTS admins_role_check;
 ALTER TABLE admins ADD CONSTRAINT admins_role_check CHECK (role IN ('SUPER_ADMIN', 'PROFILE_ADMIN', 'MARKETING_ADMIN'));
+
+-- Add optional Shopee URL for UMKM products.
+ALTER TABLE products ADD COLUMN IF NOT EXISTS shopee_url TEXT NULL;
