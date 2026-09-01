@@ -40,6 +40,17 @@ adminNewsRouter.post(
   asyncHandler(newsController.createNews)
 );
 
+adminNewsRouter.post(
+  '/images',
+  upload.single('image'),
+  asyncHandler(newsController.uploadBodyImage)
+);
+
+adminNewsRouter.post(
+  '/images/cleanup',
+  asyncHandler(newsController.cleanupBodyImages)
+);
+
 adminNewsRouter.put(
   '/:id', 
   upload.single('thumbnail'), 

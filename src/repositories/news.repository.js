@@ -12,6 +12,16 @@ export const countNews = async (search, client = null) => {
   return count;
 };
 
+export const isImageUsed = async (key) => {
+  const { count, error } = await supabase
+    .from('news')
+    .select('*', { count: 'exact', head: true })
+    .ilike('content', `%${key}%`);
+    
+  if (error) throw error;
+  return count > 0;
+};
+
 export const getNews = async (limit, offset, search, sortBy, client = null) => {
   let query = supabase.from('news').select('id, title, content, thumbnail_url, created_at, updated_at');
   
