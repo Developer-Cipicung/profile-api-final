@@ -26,6 +26,12 @@ const processImage = (product) => {
   return product;
 };
 
+const normalizeOptionalText = (value) => {
+  if (typeof value !== 'string') return value;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+};
+
 export const getProducts = async ({ page, limit, search, sort }) => {
   const offset = getOffset(page, limit);
   const totalItems = await productRepo.countProducts(search);
@@ -63,6 +69,7 @@ export const createProduct = async (data, file) => {
       description: data.description,
       price: parseInt(data.price, 10),
       no_telp: data.no_telp || null,
+      shopee_url: normalizeOptionalText(data.shopee_url),
       image_url: imageKey
     });
     return processImage(product);
@@ -97,6 +104,7 @@ export const updateProduct = async (id, data, file) => {
       description: data.description,
       price: data.price ? parseInt(data.price, 10) : undefined,
       no_telp: data.no_telp,
+      shopee_url: data.shopee_url !== undefined ? normalizeOptionalText(data.shopee_url) : undefined,
       image_url: newImageKey
     });
 
